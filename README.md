@@ -5,11 +5,10 @@
 <br>
 
 - [Deployment of Machine Learning Models](#deployment-of-machine-learning-models)
-  - [## Course objectives](#-course-objectives)
-  - [## What is model deployment](#-what-is-model-deployment)
-  - [## Topics covered](#-topics-covered)
+  - [Course objectives](#course-objectives)
+  - [What is model deployment](#what-is-model-deployment)
+  - [Topics covered](#topics-covered)
   - [Quick links](#quick-links)
-
 
 <br>
 
@@ -19,7 +18,9 @@ This repo contains my notes and code on the awesome course [Deployment of Machin
 <br>
 
 ## Course objectives
+
 ---
+
 After this course you should
 
 1. Be able to take machine learning models from research stage to a fully integrated API.
@@ -30,6 +31,7 @@ After this course you should
 <br>
 
 ## What is model deployment
+
 ---
 
 
@@ -50,6 +52,7 @@ After this course you should
 <br>
 
 ## Topics covered
+
 ---
 <br>
 
