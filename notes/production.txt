@@ -1,0 +1,11 @@
+Key considerations
+- testability and maintainability
+- scalability and performance
+- reproducibility (important in ml)
+
+Python packages
+- module = .py file
+- package = collection of modules 
+    - version control 
+    - metadata
+    - reproducible
