@@ -1,3 +1,4 @@
 *.csv
+.tox/
 .DS_Store
 __pycache__/
