@@ -13,7 +13,7 @@
 <br>
 
 
-This repo contains my notes and code on the awesome course [Deployment of Machine Learning Models](https://www.udemy.com/course/deployment-of-machine-learning-models) by Soledad Galli & Christopher Samiullah @ Udemy.
+**Reference**: [Deployment of Machine Learning Models](https://www.udemy.com/course/deployment-of-machine-learning-models) by Soledad Galli & Christopher Samiullah @ Udemy.
 
 <br>
 
