@@ -38,7 +38,7 @@ After this course you should
 <br>
 
 <p align='center'>
-    <img src="img/model_deployment.png"
+    <img src="images/model_deployment.png"
         width=600 />
     <br>
     <b>Figure. </b> ML models in production.
@@ -76,7 +76,7 @@ After this course you should
 <br>
 
 <p align='center'>
-    <img src="img/ml_deployment_pipeline.png"
+    <img src="images/ml_deployment_pipeline.png"
         width=600 />
     <br>
     <b>Figure. </b> Course sections dealing with the phases of model deployment. 
