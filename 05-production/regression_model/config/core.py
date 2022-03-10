@@ -27,8 +27,7 @@ class AppConfig(BaseModel):
 
 class ModelConfig(BaseModel):
     """
-    All configuration relevant to model
-    training and feature engineering.
+    All configuration relevant to model training and feature engineering.
     """
 
     target: str
