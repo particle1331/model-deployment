@@ -68,7 +68,7 @@ def find_config_file() -> Path:
         raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
     else:
         return CONFIG_FILE_PATH
-    
+
 
 def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
     """Parse YAML containing the package configuration."""
@@ -87,7 +87,7 @@ def create_and_validate_config(parsed_config: YAML = None) -> Config:
         parsed_config = fetch_config_from_yaml()
 
     # specify the data attribute from the strictyaml YAML type.
-    return = Config(
+    return Config(
         app_config=AppConfig(**parsed_config.data),
         model_config=ModelConfig(**parsed_config.data),
     )
