@@ -64,22 +64,21 @@ class Config(BaseModel):
 
 def find_config_file() -> Path:
     """Locate the configuration file."""
-    if CONFIG_FILE_PATH.is_file():
+    if not CONFIG_FILE_PATH.is_file():
+        raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
+    else:
         return CONFIG_FILE_PATH
-    raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
-
+    
 
 def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
     """Parse YAML containing the package configuration."""
 
-    if not cfg_path:
+    if cfg_path is None:
         cfg_path = find_config_file()
 
-    if cfg_path:
-        with open(cfg_path, "r") as conf_file:
-            parsed_config = load(conf_file.read())
-            return parsed_config
-    raise OSError(f"Did not find config file at path: {cfg_path}")
+    with open(cfg_path, "r") as conf_file:
+        parsed_config = load(conf_file.read())
+        return parsed_config
 
 
 def create_and_validate_config(parsed_config: YAML = None) -> Config:
@@ -88,12 +87,10 @@ def create_and_validate_config(parsed_config: YAML = None) -> Config:
         parsed_config = fetch_config_from_yaml()
 
     # specify the data attribute from the strictyaml YAML type.
-    _config = Config(
+    return = Config(
         app_config=AppConfig(**parsed_config.data),
         model_config=ModelConfig(**parsed_config.data),
     )
-
-    return _config
 
 
 config = create_and_validate_config()

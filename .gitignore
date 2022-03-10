@@ -2,4 +2,5 @@
 *.pkl
 .tox/
 .DS_Store
+tid_regression_model.egg-info
 __pycache__/
