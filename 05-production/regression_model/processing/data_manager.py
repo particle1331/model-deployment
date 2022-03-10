@@ -10,7 +10,7 @@ from regression_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, config
 
 
 def load_dataset(*, file_name: str) -> pd.DataFrame:
-    dataframe = pd.read_csv(Path(f"{DATASET_DIR}/{file_name}"))
+    dataframe = pd.read_csv(DATASET_DIR / file_name)
     dataframe["MSSubClass"] = dataframe["MSSubClass"].astype("O")
 
     # rename variables beginning with numbers to avoid syntax errors later
@@ -52,4 +52,4 @@ def remove_old_pipelines(*, files_to_keep: t.List[str]) -> None:
     do_not_delete = files_to_keep + ["__init__.py"]
     for model_file in TRAINED_MODEL_DIR.iterdir():
         if model_file.name not in do_not_delete:
-            model_file.unlink()
+            model_file.unlink() # delete

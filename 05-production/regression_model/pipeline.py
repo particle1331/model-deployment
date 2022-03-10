@@ -17,7 +17,7 @@ from regression_model.processing import features as pp
 price_pipe = Pipeline(
     [
         # ===== IMPUTATION =====
-        # impute categorical variables with string missing
+        # Impute categorical variables with string missing
         (
             "missing_imputation",
             CategoricalImputer(
@@ -32,12 +32,12 @@ price_pipe = Pipeline(
                 variables=config.model_config.categorical_vars_with_na_frequent,
             ),
         ),
-        # add missing indicator
+        # Add missing indicator
         (
             "missing_indicator",
             AddMissingIndicator(variables=config.model_config.numerical_vars_with_na),
         ),
-        # impute numerical variables with the mean
+        # Impute numerical variables with the mean
         (
             "mean_imputation",
             MeanMedianImputer(
@@ -45,6 +45,7 @@ price_pipe = Pipeline(
                 variables=config.model_config.numerical_vars_with_na,
             ),
         ),
+        
         # == TEMPORAL VARIABLES ====
         (
             "elapsed_time",
@@ -54,6 +55,7 @@ price_pipe = Pipeline(
             ),
         ),
         ("drop_features", DropFeatures(features_to_drop=[config.model_config.ref_var])),
+        
         # ==== VARIABLE TRANSFORMATION =====
         ("log", LogTransformer(variables=config.model_config.numericals_log_vars)),
         (
@@ -63,7 +65,8 @@ price_pipe = Pipeline(
                 variables=config.model_config.binarize_vars,
             ),
         ),
-        # === mappers ===
+        
+        # === MAPPERS ===
         (
             "mapper_qual",
             pp.Mapper(
@@ -92,6 +95,7 @@ price_pipe = Pipeline(
                 mappings=config.model_config.garage_mappings,
             ),
         ),
+        
         # == CATEGORICAL ENCODING
         (
             "rare_label_encoder",
@@ -99,7 +103,7 @@ price_pipe = Pipeline(
                 tol=0.01, n_categories=1, variables=config.model_config.categorical_vars
             ),
         ),
-        # encode categorical variables using the target mean
+        # Encode categorical variables using the target mean
         (
             "categorical_encoder",
             OrdinalEncoder(
