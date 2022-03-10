@@ -62,7 +62,7 @@ class Config(BaseModel):
     model_config: ModelConfig
 
 
-def find_config_file() -> Path:
+def validate_config_file_path() -> Path:
     """Locate the configuration file."""
     if not CONFIG_FILE_PATH.is_file():
         raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
@@ -74,7 +74,7 @@ def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
     """Parse YAML containing the package configuration."""
 
     if cfg_path is None:
-        cfg_path = find_config_file()
+        cfg_path = validate_config_file_path()
 
     with open(cfg_path, "r") as conf_file:
         parsed_config = load(conf_file.read())
