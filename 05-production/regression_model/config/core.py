@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, Sequence
+from typing import Dict, List, Optional, Sequence
 
 from pydantic import BaseModel
 from strictyaml import YAML, load
@@ -62,27 +62,30 @@ class Config(BaseModel):
     model_config: ModelConfig
 
 
-def validate_config_file_path() -> Path:
+def validate_config_file_path(cfg_path: Optional[Path] = None) -> Path:
     """Locate the configuration file."""
-    if not CONFIG_FILE_PATH.is_file():
-        raise Exception(f"Config not found at {CONFIG_FILE_PATH!r}")
-    else:
-        return CONFIG_FILE_PATH
+    # Assign default config.yml file path
+    if cfg_path is None:
+        cfg_path = CONFIG_FILE_PATH
+
+    # Check whether config path exists
+    if not cfg_path.is_file():
+        raise OSError(f"Config not found at {cfg_path!r}")
+    return cfg_path
 
 
-def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
+def fetch_config_from_yaml(cfg_path: Optional[Path] = None) -> YAML:
     """Parse YAML containing the package configuration."""
 
-    if cfg_path is None:
-        cfg_path = validate_config_file_path()
-
+    cfg_path = validate_config_file_path(cfg_path)
     with open(cfg_path, "r") as conf_file:
         parsed_config = load(conf_file.read())
         return parsed_config
 
 
-def create_and_validate_config(parsed_config: YAML = None) -> Config:
+def create_and_validate_config(parsed_config: Optional[YAML] = None) -> Config:
     """Run validation on config values."""
+
     if parsed_config is None:
         parsed_config = fetch_config_from_yaml()
 
