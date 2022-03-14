@@ -1,0 +1,8 @@
+numpy<1.23.0,>=1.22.0
+pandas<1.5.0,>=1.4.0
+pydantic<1.9.0,>=1.8.1
+scikit-learn<1.1.0,>=1.0.0
+strictyaml<1.4.0,>=1.3.2
+ruamel.yaml==0.16.12
+feature-engine<1.1.0,>=1.0.2
+joblib<1.1.0,>=1.0.1
