@@ -16,12 +16,10 @@ class TemporalVariableTransformer(BaseEstimator, TransformerMixin):
         self.reference_variable = reference_variable
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need this step to fit the sklearn pipeline
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-
-        # so that we do not over-write the original dataframe
+        # So that we do not over-write the original dataframe
         X = X.copy()
 
         for feature in self.variables:
@@ -42,7 +40,6 @@ class Mapper(BaseEstimator, TransformerMixin):
         self.mappings = mappings
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None):
-        # we need the fit statement to accomodate the sklearn pipeline
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:

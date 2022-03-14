@@ -18,7 +18,7 @@ def run_training() -> None:
         test_size=config.model_config.test_size,
         random_state=config.model_config.random_state,
     )
-    y_train = np.log(y_train)
+    y_train = np.log(y_train)  # <-- ⚠ Invert before serving preds
 
     # Fit model
     price_pipe.fit(X_train, y_train)

@@ -25,6 +25,7 @@ price_pipe = Pipeline(
                 variables=config.model_config.categorical_vars_with_na_missing,
             ),
         ),
+        # Impute categorical variables with most frequent category
         (
             "frequent_imputation",
             CategoricalImputer(
@@ -97,12 +98,13 @@ price_pipe = Pipeline(
         ),
         
         # == CATEGORICAL ENCODING
+        # Encode infrequent categorical variable with category "Rare"
         (
             "rare_label_encoder",
             RareLabelEncoder(
                 tol=0.01, n_categories=1, variables=config.model_config.categorical_vars
             ),
-        ),
+        ),        
         # Encode categorical variables using the target mean
         (
             "categorical_encoder",
@@ -112,6 +114,8 @@ price_pipe = Pipeline(
             ),
         ),
         ("scaler", MinMaxScaler()),
+
+        # == REGRESSION MODEL (LASSO)
         (
             "Lasso",
             Lasso(
