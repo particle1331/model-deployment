@@ -46,7 +46,6 @@ price_pipe = Pipeline(
                 variables=config.model_config.numerical_vars_with_na,
             ),
         ),
-        
         # == TEMPORAL VARIABLES ====
         (
             "elapsed_time",
@@ -56,7 +55,6 @@ price_pipe = Pipeline(
             ),
         ),
         ("drop_features", DropFeatures(features_to_drop=[config.model_config.ref_var])),
-        
         # ==== VARIABLE TRANSFORMATION =====
         ("log", LogTransformer(variables=config.model_config.numericals_log_vars)),
         (
@@ -66,7 +64,6 @@ price_pipe = Pipeline(
                 variables=config.model_config.binarize_vars,
             ),
         ),
-        
         # === MAPPERS ===
         (
             "mapper_qual",
@@ -96,7 +93,6 @@ price_pipe = Pipeline(
                 mappings=config.model_config.garage_mappings,
             ),
         ),
-        
         # == CATEGORICAL ENCODING
         # Encode infrequent categorical variable with category "Rare"
         (
@@ -104,7 +100,7 @@ price_pipe = Pipeline(
             RareLabelEncoder(
                 tol=0.01, n_categories=1, variables=config.model_config.categorical_vars
             ),
-        ),        
+        ),
         # Encode categorical variables using the target mean
         (
             "categorical_encoder",
@@ -114,7 +110,6 @@ price_pipe = Pipeline(
             ),
         ),
         ("scaler", MinMaxScaler()),
-
         # == REGRESSION MODEL (LASSO)
         (
             "Lasso",
