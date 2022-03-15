@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from pathlib import Path
-
 from setuptools import find_packages, setup
+
 
 # Package meta-data.
 NAME = 'regression-model'
@@ -14,11 +13,10 @@ AUTHOR = "particle1331"
 REQUIRES_PYTHON = ">=3.6.0"
 
 
-# The rest you shouldn't have to touch too much :)
-# ------------------------------------------------
+# The rest you shouldn't have to touch too much. :)
 # Except, perhaps the License and Trove Classifiers!
-# If you do change the License, remember to change the
-# Trove Classifier for that!
+# ------------------------------------------------
+
 long_description = DESCRIPTION
 
 # Load the package's VERSION file as a dictionary.
