@@ -10,6 +10,7 @@ from regression_model.processing.data_manager import clean_inputs
 
 def drop_na_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
     """Check model inputs for na values and filter."""
+
     validated_data = input_data.copy()
     new_vars_with_na = [
         var
