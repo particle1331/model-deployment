@@ -29,7 +29,6 @@ def drop_na_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
 def validate_inputs(*, input_data: pd.DataFrame) -> Tuple[pd.DataFrame, Optional[dict]]:
     """Check model inputs for unprocessable values."""
 
-    # Convert syntax error field names (beginning with numbers)
     input_data = clean_inputs(input_data=input_data)
     relevant_data = input_data[config.model_config.features].copy()
     validated_data = drop_na_inputs(input_data=relevant_data)
