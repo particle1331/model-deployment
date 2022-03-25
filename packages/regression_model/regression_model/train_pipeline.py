@@ -2,6 +2,7 @@ import numpy as np
 from config.core import config
 from pipeline import price_pipe
 from processing.data_manager import load_dataset, save_pipeline
+from processing.validation import validate_inputs
 from sklearn.model_selection import train_test_split
 
 
@@ -10,11 +11,13 @@ def run_training() -> None:
 
     # Read training data
     data = load_dataset(file_name=config.app_config.training_data_file)
+    X = data[config.model_config.features]
+    y = data[config.model_config.target]
 
     # Divide train and test
     X_train, X_test, y_train, y_test = train_test_split(
-        data[config.model_config.features],
-        data[config.model_config.target],
+        validate_inputs(input_data=X),
+        y,
         test_size=config.model_config.test_size,
         random_state=config.model_config.random_state,
     )

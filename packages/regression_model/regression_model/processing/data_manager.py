@@ -6,19 +6,11 @@ from regression_model import __version__ as _version
 from regression_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, config
 
 
-def clean_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
-    """Clean data to avoid syntax errors later."""
-
-    input_data.rename(columns=config.model_config.variables_to_rename, inplace=True)
-    input_data["MSSubClass"] = input_data["MSSubClass"].astype("O")
-    return input_data
-
-
 def load_dataset(*, file_name: str) -> pd.DataFrame:
-    """Load and clean dataset."""
+    """Load (and preprocess) dataset."""
 
     dataframe = pd.read_csv(DATASET_DIR / file_name)
-    dataframe = clean_inputs(input_data=dataframe)
+    dataframe = dataframe.rename(columns=config.model_config.variables_to_rename)
     return dataframe
 
 
