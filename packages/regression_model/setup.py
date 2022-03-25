@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 
 # Package meta-data.
-NAME = 'regression-model'
+NAME = 'regression-model-template'
 DESCRIPTION = "Example regression model package for house prices."
 URL = "https://github.com/particle1331/model-deployment"
 EMAIL = "particle1331@gmail.com"
