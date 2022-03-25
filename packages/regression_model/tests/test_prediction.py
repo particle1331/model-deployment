@@ -15,8 +15,8 @@ def test_make_prediction(sample_input_data):
 
     # Then
     predictions = result.get("predictions")
+    assert result.get("errors") is None
     assert isinstance(predictions, list)
     assert isinstance(predictions[0], np.float64)
-    assert result.get("errors") is None
     assert len(predictions) == expected_no_predictions
     assert math.isclose(predictions[0], expected_first_prediction_value, abs_tol=100)
