@@ -1,8 +1,8 @@
 import numpy as np
-from config.core import config
-from pipeline import price_pipe
-from processing.data_manager import load_dataset, save_pipeline
-from processing.validation import validate_inputs
+from regression_model.config.core import config
+from regression_model.pipeline import price_pipe
+from regression_model.processing.data_manager import load_dataset, save_pipeline
+from regression_model.processing.validation import validate_inputs
 from sklearn.model_selection import train_test_split
 
 
