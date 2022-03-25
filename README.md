@@ -1,4 +1,3 @@
 # model-deployment
 
-This template is based on a course I took: <br>
-https://github.com/trainindata/deploying-machine-learning-models
+Template for creating a package for training and testing an ML model and deploying a FastAPI app that serves predicitons from the model.
