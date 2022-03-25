@@ -1,9 +1,10 @@
 import numpy as np
+from sklearn.model_selection import train_test_split
+
 from regression_model.config.core import config
 from regression_model.pipeline import price_pipe
 from regression_model.processing.data_manager import load_dataset, save_pipeline
 from regression_model.processing.validation import validate_inputs
-from sklearn.model_selection import train_test_split
 
 
 def run_training() -> None:
