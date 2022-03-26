@@ -295,6 +295,6 @@ HouseDataInputSchema = DataFrameSchema(
         "SecondFlrSF": Column(int, Check.ge(0)),
         "ThreeSsnPortch": Column(int, Check.ge(0)),
     },
-    strict="filter",  # Drop data columns that are not in the schema.
+    strict=True,  # Data columns == schema columns
     coerce=True,
 )
