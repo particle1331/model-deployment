@@ -20,7 +20,7 @@ def make_prediction(*, input_data: t.Union[pd.DataFrame, dict]) -> dict:
 
     try:
         validated_data = validate_inputs(input_data=data)
-        X = validated_data[config.model_config.features]  # type: ignore
+        X = validated_data[config.model_config.features]
         predictions = [np.exp(y) for y in _price_pipe.predict(X=X)]
 
     except Exception as e:

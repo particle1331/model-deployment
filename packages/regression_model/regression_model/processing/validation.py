@@ -1,5 +1,3 @@
-from typing import Optional, Tuple
-
 import pandas as pd
 
 from regression_model.config.core import config
@@ -27,7 +25,7 @@ def drop_na_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
     return input_data.dropna(axis=0, subset=new_vars_with_na)
 
 
-def validate_inputs(*, input_data: pd.DataFrame) -> Tuple[pd.DataFrame, Optional[dict]]:
+def validate_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
     """Check model inputs for unprocessable values."""
 
     selected_features = config.model_config.features
