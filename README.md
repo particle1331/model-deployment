@@ -8,5 +8,5 @@ Template for creating a package for training and testing an ML model and deployi
 * [*François Voron*. Building Data Science Applications with FastAPI. Published by Packt](https://github.com/PacktPublishing/Building-Data-Science-Applications-with-FastAPI)
 * [*Goku Mohandas*. Made With ML](https://madewithml.com/)
 * [`tox` automation project (docs)](https://tox.wiki/en/latest/)
-* [`pandera`. A Statistical DataFrame Testing Toolkit (docs)](https://pandera.readthedocs.io/en/stable/)
+* [`pandera`: A Statistical DataFrame Testing Toolkit (docs)](https://pandera.readthedocs.io/en/stable/)
 * [Automated Testing in Python with pytest, tox, and GitHub Actions](https://www.youtube.com/watch?v=DhUpxWjOhME)
