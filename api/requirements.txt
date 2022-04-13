@@ -6,4 +6,4 @@ typing_extensions>=3.7.4,<3.8.0
 loguru>=0.5.3,<0.6.0
 
 # Our custom package published on PyPI
-regression-model-template==0.0.1
+regression-model-template==0.1.0

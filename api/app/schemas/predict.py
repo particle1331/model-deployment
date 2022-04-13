@@ -1,7 +1,7 @@
 from typing import Any, List, Optional
 
 from pydantic import BaseModel
-from regression_model.processing.validation import HouseDataInputSchema
+from regression_model.processing.schemas import HouseDataInputSchema
 
 
 class PredictionResults(BaseModel):
