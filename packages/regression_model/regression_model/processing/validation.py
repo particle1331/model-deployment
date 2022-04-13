@@ -1,7 +1,9 @@
+import numpy as np
 import pandas as pd
+from pydantic import ValidationError
 
 from regression_model.config.core import config
-from regression_model.processing.schemas import HouseDataInputSchema
+from regression_model.processing.schemas import MultipleHouseDataInputs
 
 
 def drop_na_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
@@ -29,10 +31,18 @@ def validate_inputs(*, input_data: pd.DataFrame) -> pd.DataFrame:
     """Check model inputs for unprocessable values."""
 
     selected_features = config.model_config.features
-    input_data = input_data.rename(columns=config.model_config.variables_to_rename)
-    input_data = input_data[selected_features].copy()
-    input_data = drop_na_inputs(input_data=input_data)
+    validated_data = input_data.rename(columns=config.model_config.variables_to_rename)
+    validated_data = validated_data[selected_features].copy()
+    validated_data = drop_na_inputs(input_data=validated_data)
+    validated_data["MSSubClass"] = validated_data["MSSubClass"].astype("O")
+    errors = None
 
-    schema = HouseDataInputSchema.select_columns(selected_features)
-    validated_data = schema.validate(input_data)
-    return validated_data
+    try:
+        # Replace numpy nans so that pydantic can validate
+        MultipleHouseDataInputs(
+            inputs=validated_data.replace({np.nan: None}).to_dict(orient="records")
+        )
+    except ValidationError as e:
+        errors = e.json()
+
+    return validated_data, errors

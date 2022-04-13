@@ -16,20 +16,16 @@ def make_prediction(*, input_data: t.Union[pd.DataFrame, dict]) -> dict:
     """Make a prediction using a saved model pipeline."""
 
     data = pd.DataFrame(input_data)
-    predictions, errors = None, None
+    validated_data, errors = validate_inputs(input_data=data)
+    predictions = None
 
-    try:
-        validated_data = validate_inputs(input_data=data)
+    if not errors:
         X = validated_data[config.model_config.features]
         predictions = [np.exp(y) for y in _price_pipe.predict(X=X)]
-
-    except Exception as e:
-        errors = e
 
     results = {
         "predictions": predictions,
         "version": _version,
         "errors": errors,
     }
-
     return results
