@@ -1,9 +1,9 @@
 -r requirements.txt
 
-# testing requirements
+# Testing requirements
 pytest>=6.2.3,<6.3.0
 
-# repo maintenance tooling
+# Repo maintenance tooling
 black==22.3.0
 flake8>=3.9.0,<3.10.0
 mypy==0.812
