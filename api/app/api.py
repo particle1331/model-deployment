@@ -17,9 +17,8 @@ api_router = APIRouter()
 
 @api_router.get("/health", response_model=schemas.Health, status_code=200)
 def health() -> dict:
-    """
-    Root Get
-    """
+    """Root GET."""
+
     health = schemas.Health(
         name=settings.PROJECT_NAME, api_version=__version__, model_version=model_version
     )
@@ -29,9 +28,7 @@ def health() -> dict:
 
 @api_router.post("/predict", response_model=schemas.PredictionResults, status_code=200)
 async def predict(input_data: schemas.MultipleHouseDataInputs) -> Any:
-    """
-    Make house price predictions with the TID regression model
-    """
+    """Make house price predictions with the regression model."""
 
     input_df = pd.DataFrame(jsonable_encoder(input_data.inputs))
 

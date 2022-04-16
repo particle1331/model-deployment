@@ -1,32 +1,20 @@
 import logging
 import sys
 from types import FrameType
-from typing import List, cast
+from typing import cast
 
 from loguru import logger
-from pydantic import AnyHttpUrl, BaseSettings
+from pydantic import BaseSettings
 
 
 class LoggingSettings(BaseSettings):
-    LOGGING_LEVEL: int = logging.INFO  # logging levels are type int
+    LOGGING_LEVEL: int = logging.INFO  # == 20, weird but logging levels are int.
 
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
-
-    # Meta
-    logging: LoggingSettings = LoggingSettings()
-
-    # BACKEND_CORS_ORIGINS is a comma-separated list of origins
-    # e.g: http://localhost,http://localhost:4200,http://localhost:3000
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
-        "http://localhost:3000",  # type: ignore
-        "http://localhost:8000",  # type: ignore
-        "https://localhost:3000",  # type: ignore
-        "https://localhost:8000",  # type: ignore
-    ]
-
     PROJECT_NAME: str = "House Price Prediction API"
+    logging: LoggingSettings = LoggingSettings()
 
     class Config:
         case_sensitive = True
@@ -67,4 +55,5 @@ def setup_app_logging(config: Settings) -> None:
     )
 
 
+# This will be used by other parts of our code to access API settings.
 settings = Settings()
