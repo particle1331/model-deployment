@@ -113,3 +113,8 @@ venv.bak/
 *.db
 *.pptx
 *.pkl
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
