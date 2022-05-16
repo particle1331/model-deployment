@@ -8,3 +8,6 @@ black==22.3.0
 flake8>=3.9.0,<3.10.0
 mypy==0.812
 isort==5.8.0
+
+# For fetching data in CI
+kaggle>=1.5.12,<1.6.0
