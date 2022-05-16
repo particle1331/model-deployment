@@ -103,7 +103,7 @@ tags_only: &tags_only
 
 workflows:
   version: 2
-  section_07:
+  regression_model:
     jobs:
       - test_app
       - deploy_app_to_heroku:
