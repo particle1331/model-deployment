@@ -70,9 +70,9 @@ workflows:
   version: 2
   regression_model:
     jobs:
-      - train_and_upload_regression_model:
-        <<: *tags_only
-      # - test_app
+      # - train_and_upload_regression_model:
+      #   <<: *tags_only
+      - test_app
       # - deploy_app_to_heroku:
       #     requires:
       #       - test_app
