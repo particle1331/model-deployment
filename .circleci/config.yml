@@ -38,12 +38,12 @@ jobs:
   train_and_upload_regression_model:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
-    
     steps:
       - *prepare_tox
       - run:
           name: Fetch the data
           command: |
+            ls -a
             tox -e fetch_data
       - run:
           name: Training the model
@@ -70,13 +70,13 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
       # upload after git tags are created
       - train_and_upload_regression_model:
           filters:
             # branches:
             #   only:
-            #     - master
+            #     - main
             tags:
               only:
                 /.*/
