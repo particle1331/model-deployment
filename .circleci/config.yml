@@ -64,7 +64,7 @@ jobs:
 
 workflows:
   version: 2
-  regression_model:
+  regression-model:
     jobs:
       - test_app
       
