@@ -66,6 +66,7 @@ workflows:
   version: 2
   regression_model:
     jobs:
+      - test_app
       - train_and_upload_regression_model:
           filters:
             # ignore any commit on any branch by default
@@ -74,17 +75,10 @@ workflows:
             # only act on version tags
             tags:
               only: /^.*/
-
-      - test_app:
+      - deploy_app_to_heroku:
           requires:
-            # check for new version
-            - train_and_upload_regression_model
-
-      # - deploy_app_to_heroku:
-      #     requires:
-      #       - test_app
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-    
+            - test_app
+          filters:
+            branches:
+              only:
+                - main
