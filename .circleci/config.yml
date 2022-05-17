@@ -91,5 +91,4 @@ workflows:
               only:
                 - main
       
-      - train_and_upload_regression_model:
-          <<: *tags_only
+      - train_and_upload_regression_model
