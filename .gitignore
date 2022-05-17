@@ -113,8 +113,10 @@ venv.bak/
 *.db
 *.pptx
 *.pkl
+packages/regression_model/regression_model/datasets/*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
