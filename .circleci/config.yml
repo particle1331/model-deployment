@@ -1,17 +1,18 @@
 version: 2
 
+
 defaults: &defaults
   docker:
     - image: circleci/python:3.9.5
   working_directory: ~/project
 
-prepare_venv: &prepare_venv
+prepare_tox: &prepare_tox
   run:
-    name: Create venv
+    name: Install tox
     command: |
-      python3 -m venv venv
-      source venv/bin/activate
-      pip install --upgrade pip
+      sudo pip install --upgrade pip
+      pip install --user tox
+
 
 jobs:
   test_app:
