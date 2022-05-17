@@ -59,25 +59,24 @@ jobs:
             tox -e publish_model
 
 
-tags_only: &tags_only
-
-
 workflows:
   version: 2
   regression_model:
     jobs:
-      # - test_app
+      - test_app
+      - deploy_app_to_heroku:
+          requires:
+            - test_app
+          filters:
+            branches:
+              only:
+                - master
+      # upload after git tags are created
       - train_and_upload_regression_model:
-        filters:
-          tags:
-            only: 
-              /.*/
-      # - deploy_app_to_heroku:
-      #     requires:
-      #       - test_app
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-      
-      
+          filters:
+            # branches:
+            #   only:
+            #     - master
+            tags:
+              only:
+                /.*/
