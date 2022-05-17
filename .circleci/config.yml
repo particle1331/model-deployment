@@ -33,8 +33,6 @@ jobs:
     <<: *defaults
     working_directory: ~/project/api
     steps:
-      - checkout:
-          path: ~/project
       - *prepare_tox
       - run:
           name: Runnning app tests
@@ -44,8 +42,6 @@ jobs:
   deploy_app_to_heroku:
     <<: *defaults
     steps:
-      - checkout:
-          path: ~/project
       - run:
           name: Deploy to Heroku
           command: |
@@ -55,8 +51,6 @@ jobs:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
-      - checkout:
-          path: ~/project
       - *prepare_tox
       - run:
           name: Fetch the data
@@ -72,23 +66,24 @@ jobs:
             tox -e publish_model
 
 tags_only: &tags_only
-  filters:
-    branches:
-      ignore: /.*/
-    tags:
-      only: /^.*/
+  
 
 workflows:
   version: 2
   regression_model:
     jobs:
       - test_app
-      - deploy_app_to_heroku:
-          requires:
-            - test_app
-          filters:
-            branches:
-              only:
-                - main
-      
+      # - deploy_app_to_heroku:
+      #     requires:
+      #       - test_app
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
       - train_and_upload_regression_model
+          # ignore any commit on any branch by default
+          branches:
+            ignore: /.*/
+          # only act on version tags
+          tags:
+            only: /^.*/
