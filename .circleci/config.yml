@@ -78,7 +78,7 @@ workflows:
       - test_app:
           requires:
             # check for new version
-            train_and_upload_regression_model
+            - train_and_upload_regression_model
 
       # - deploy_app_to_heroku:
       #     requires:
