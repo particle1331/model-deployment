@@ -5,12 +5,28 @@ defaults: &defaults
     - image: circleci/python:3.9.5
   working_directory: ~/project
 
+prepare_venv: &prepare_venv
+  run:
+    name: Create venv
+    command: |
+      python3 -m venv venv
+      source venv/bin/activate
+      pip install --upgrade pip
+
 prepare_tox: &prepare_tox
   run:
     name: Install tox
     command: |
       sudo pip install --upgrade pip
       pip install --user tox
+
+fetch_data: &fetch_data
+  run:
+    name: Set script permissions and fetch data
+    command: |
+      source venv/bin/activate
+      chmod +x ./scripts/fetch_kaggle_dataset.sh
+      ./scripts/fetch_kaggle_dataset.sh
 
 jobs:
   test_app:
@@ -24,7 +40,7 @@ jobs:
           name: Runnning app tests
           command: |
             tox
-
+  
   deploy_app_to_heroku:
     <<: *defaults
     steps:
@@ -34,30 +50,33 @@ jobs:
           name: Deploy to Heroku
           command: |
             git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
-
+  
   train_and_upload_regression_model:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
+      - checkout:
+          path: ~/project
       - *prepare_tox
       - run:
           name: Fetch the data
           command: |
-            ls -a
             tox -e fetch_data
       - run:
-          name: Training the model
-          command: |
-            tox -e train
-      - run:
-          name: Testing the model
+          name: Test the model
           command: |
             tox
       - run:
-          name: Publish model
+          name: Publish model to Gemfury
           command: |
             tox -e publish_model
 
+tags_only: &tags_only
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^.*/
 
 workflows:
   version: 2
@@ -71,12 +90,6 @@ workflows:
             branches:
               only:
                 - main
-      # upload after git tags are created
+      
       - train_and_upload_regression_model:
-          filters:
-            # branches:
-            #   only:
-            #     - main
-            tags:
-              only:
-                /.*/
+          <<: *tags_only
