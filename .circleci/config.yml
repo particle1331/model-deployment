@@ -64,7 +64,7 @@ jobs:
 
 workflows:
   version: 2
-  regression_model:
+  house-prices:
     jobs:
       - test_app
       
