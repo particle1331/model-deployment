@@ -64,8 +64,6 @@ jobs:
           name: Publish model to Gemfury
           command: |
             tox -e publish_model
-
-tags_only: &tags_only
   
 
 workflows:
