@@ -46,21 +46,23 @@ jobs:
           command: |
             tox -e fetch_data
       - run:
-          name: Test the model
+          name: Training the model
+          command: |
+            tox -e train
+      - run:
+          name: Testing the model
           command: |
             tox
       - run:
-          name: Train model and publish to Gemfury
+          name: Publish model
           command: |
             tox -e publish_model
 
 
 tags_only: &tags_only
   filters:
-    branches:
-      ignore: /.*/
     tags:
-      only: /^.*/
+      only: '*'
 
 workflows:
   version: 2
@@ -68,13 +70,13 @@ workflows:
     jobs:
       - train_and_upload_regression_model:
         <<: *tags_only
-      - test_app
-      - deploy_app_to_heroku:
-          requires:
-            - test_app
-          filters:
-            branches:
-              only:
-                - main
+      # - test_app
+      # - deploy_app_to_heroku:
+      #     requires:
+      #       - test_app
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
       
       
