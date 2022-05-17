@@ -1,17 +1,9 @@
-version: 1
+version: 2
 
 defaults: &defaults
   docker:
     - image: circleci/python:3.9.5
   working_directory: ~/project
-
-prepare_venv: &prepare_venv
-  run:
-    name: Create venv
-    command: |
-      python3 -m venv venv
-      source venv/bin/activate
-      pip install --upgrade pip
 
 prepare_tox: &prepare_tox
   run:
@@ -19,14 +11,6 @@ prepare_tox: &prepare_tox
     command: |
       sudo pip install --upgrade pip
       pip install --user tox
-
-fetch_data: &fetch_data
-  run:
-    name: Set script permissions and fetch data
-    command: |
-      source venv/bin/activate
-      chmod +x ./scripts/fetch_kaggle_dataset.sh
-      ./scripts/fetch_kaggle_dataset.sh
 
 jobs:
   test_app:
@@ -55,19 +39,22 @@ jobs:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
-      - checkout:
-          path: ~/project
+
       - *prepare_tox
       - run:
           name: Fetch the data
           command: |
             tox -e fetch_data
       - run:
-          name: Test the model
+          name: Training the model
+          command: |
+            tox -e train
+      - run:
+          name: Testing the model
           command: |
             tox
       - run:
-          name: Publish model to Gemfury
+          name: Publish model
           command: |
             tox -e publish_model
 
@@ -83,14 +70,15 @@ workflows:
   version: 2
   regression_model:
     jobs:
-      - test_app
-      - deploy_app_to_heroku:
-          requires:
-            - test_app
-          filters:
-            branches:
-              only:
-                - main
-      
       - train_and_upload_regression_model:
-          <<: *tags_only
+        <<: *tags_only
+      # - test_app
+      # - deploy_app_to_heroku:
+      #     requires:
+      #       - test_app
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+      
+      
