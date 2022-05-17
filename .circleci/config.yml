@@ -67,12 +67,13 @@ workflows:
   regression_model:
     jobs:
       - train_and_upload_regression_model:
-          # ignore any commit on any branch by default
-          branches:
-            ignore: /.*/
-          # only act on version tags
-          tags:
-            only: /^.*/
+          filters:
+            # ignore any commit on any branch by default
+            branches:
+              ignore: /.*/
+            # only act on version tags
+            tags:
+              only: /^.*/
 
       # - test_app:
       #     requires:
