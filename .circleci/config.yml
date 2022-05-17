@@ -30,6 +30,8 @@ jobs:
   deploy_app_to_heroku:
     <<: *defaults
     steps:
+      - checkout:
+          path: ~/project
       - run:
           name: Deploy to Heroku
           command: |
@@ -39,11 +41,17 @@ jobs:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
+      - checkout:
+          path: ~/project
       - *prepare_tox
       - run:
           name: Fetch the data
           command: |
             tox -e fetch_data
+      - run:
+          name: Train the model
+          command: |
+            tox -e train
       - run:
           name: Test the model
           command: |
@@ -66,7 +74,7 @@ workflows:
       #       branches:
       #         only:
       #           - main
-      # - train_and_upload_regression_model:
+      - train_and_upload_regression_model
       # # ignore any commit on any branch by default
       # branches:
       #   ignore: /.*/
