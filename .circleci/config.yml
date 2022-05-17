@@ -51,7 +51,7 @@ jobs:
           command: |
             git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
 
-  test_and_upload_regression_model:
+  train_and_upload_regression_model:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
@@ -71,28 +71,6 @@ jobs:
           command: |
             tox -e publish_model
 
-  train_and_upload_regression_model:
-    <<: *defaults
-    steps:
-      - checkout
-      - *prepare_venv
-      - run: 
-          name: Install requirements
-          command: |
-            . venv/bin/activate
-            pip install -r packages/regression_model/requirements.txt
-      - *fetch_data
-      - run: 
-          name: Train model
-          command: |
-            . venv/bin/activate
-            PYTHONPATH=./packages/regression_model python3 packages/regression_model/regression_model/train_pipeline.py
-      - run: 
-          name: Publish model to Gemfury
-          command: |
-            . venv/bin/activate
-            chmod +x ./scripts/publish_model.sh
-            ./scripts/publish_model.sh ./packages/regression_model/
 
 tags_only: &tags_only
   filters:
@@ -113,6 +91,6 @@ workflows:
             branches:
               only:
                 - main
-      # upload after git tags are created
-      - test_and_upload_regression_model:
+      
+      - train_and_upload_regression_model:
           <<: *tags_only
