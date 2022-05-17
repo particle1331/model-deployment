@@ -39,7 +39,6 @@ jobs:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
-
       - *prepare_tox
       - run:
           name: Fetch the data
