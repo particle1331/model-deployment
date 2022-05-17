@@ -13,28 +13,11 @@ prepare_venv: &prepare_venv
       source venv/bin/activate
       pip install --upgrade pip
 
-prepare_tox: &prepare_tox
-  run:
-    name: Install tox
-    command: |
-      sudo pip install --upgrade pip
-      pip install --user tox
-
-fetch_data: &fetch_data
-  run:
-    name: Set script permissions and fetch data
-    command: |
-      source venv/bin/activate
-      chmod +x ./scripts/fetch_kaggle_dataset.sh
-      ./scripts/fetch_kaggle_dataset.sh
-
 jobs:
   test_app:
     <<: *defaults
     working_directory: ~/project/api
     steps:
-      - checkout:
-        path: ~/project
       - *prepare_tox
       - run:
           name: Runnning app tests
@@ -80,7 +63,7 @@ workflows:
       #       branches:
       #         only:
       #           - main
-      - train_and_upload_regression_model
+      - train_and_upload_regression_model:
           # ignore any commit on any branch by default
           branches:
             ignore: /.*/
