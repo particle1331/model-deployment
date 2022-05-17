@@ -21,17 +21,17 @@ jobs:
     steps:
       - *prepare_tox
       - run:
-          name: Runnning app tests
-          command: |
-            tox
+        name: Runnning app tests
+        command: |
+          tox
   
   deploy_app_to_heroku:
     <<: *defaults
     steps:
       - run:
-          name: Deploy to Heroku
-          command: |
-            git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
+        name: Deploy to Heroku
+        command: |
+          git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
   
   train_and_upload_regression_model:
     <<: *defaults
@@ -39,17 +39,17 @@ jobs:
     steps:
       - *prepare_tox
       - run:
-          name: Fetch the data
-          command: |
-            tox -e fetch_data
+        name: Fetch the data
+        command: |
+          tox -e fetch_data
       - run:
-          name: Test the model
-          command: |
-            tox
+        name: Test the model
+        command: |
+          tox
       - run:
-          name: Publish model to Gemfury
-          command: |
-            tox -e publish_model
+        name: Publish model to Gemfury
+        command: |
+          tox -e publish_model
   
 
 workflows:
@@ -64,10 +64,10 @@ workflows:
       #       branches:
       #         only:
       #           - main
-      - train_and_upload_regression_model:
-          # ignore any commit on any branch by default
-          branches:
-            ignore: /.*/
-          # only act on version tags
-          tags:
-            only: /^.*/
+      # - train_and_upload_regression_model:
+      # # ignore any commit on any branch by default
+      # branches:
+      #   ignore: /.*/
+      # # only act on version tags
+      # tags:
+      #   only: /^.*/
