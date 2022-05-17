@@ -70,10 +70,10 @@ workflows:
       
       - train_and_upload_regression_model:
           filters:
-            # ignore any commit on any branch by default
+            # Ignore any commit on any branch by default
             branches:
               ignore: /.*/
-            # only act on version tags
+            # Only act on version tags
             tags:
               only: /^.*/
 
