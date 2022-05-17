@@ -38,6 +38,7 @@ jobs:
   train_and_upload_regression_model:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
+    
     steps:
       - *prepare_tox
       - run:
@@ -59,20 +60,18 @@ jobs:
 
 
 tags_only: &tags_only
-  filters:
-    # branches:
-    #   only:
-    #     - main
-    tags:
-      only: /^v.*/
+
 
 workflows:
   version: 2
   regression_model:
     jobs:
-      - test_app
+      # - test_app
       - train_and_upload_regression_model:
-        <<: *tags_only
+        filters:
+          tags:
+            only: 
+              /.*/
       # - deploy_app_to_heroku:
       #     requires:
       #       - test_app
