@@ -74,16 +74,16 @@ workflows:
           tags:
             only: /^.*/
 
-      - test_app:
-          requires:
-            # check for new version
-            train_and_upload_regression_model
+      # - test_app:
+      #     requires:
+      #       # check for new version
+      #       train_and_upload_regression_model
 
-      - deploy_app_to_heroku:
-          requires:
-            - test_app
-          filters:
-            branches:
-              only:
-                - main
+      # - deploy_app_to_heroku:
+      #     requires:
+      #       - test_app
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
     
