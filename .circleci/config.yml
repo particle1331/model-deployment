@@ -15,12 +15,9 @@ prepare_tox: &prepare_tox
 
 prepare_heroku: &prepare_heroku
   run:
-    name: Install heroku repo
+    name: Setup Heroku CLI
     command: |
-      sudo pip install --upgrade pip
-      sudo pip install heroku
-      heroku plugins:install https://github.com/heroku/heroku-repo.git
-
+      wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 jobs:
   test_app:
@@ -44,6 +41,7 @@ jobs:
       - run:
           name: Deploy to Heroku
           command: |
+            heroku plugins:install https://github.com/heroku/heroku-repo.git
             heroku repo:purge_cache
             heroku repo:reset
             git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
