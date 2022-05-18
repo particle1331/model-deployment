@@ -11,6 +11,13 @@ parameters:
     default: false
 
 
+main_only: &main_only
+  filters:
+    branches:
+      only:
+        - main
+
+
 workflows:
   api:
     when: << pipeline.parameters.run-build-api-job >>
