@@ -32,6 +32,18 @@ jobs:
           name: Runnning app tests
           command: |
             tox
+
+  test_packages:
+    <<: *defaults
+      working_directory: ~/project/packages
+      steps:
+        - checkout:
+            path: ~/project
+        - *prepare_tox
+        - run:
+            name: Runnning packages tests
+            command: |
+              tox
   
   deploy_app_to_heroku:
     <<: *defaults
@@ -92,9 +104,14 @@ parameters:
   run-build-api-job:
     type: boolean
     default: false
+
   run-build-packages-job:
     type: boolean
     default: false
+
+  run-build-bump-model-version-job:
+    type: boolean
+    default: true
 
 
 workflows:
@@ -107,9 +124,13 @@ workflows:
           requires:
             - test_app
 
-
   packages:
     when: << pipeline.parameters.run-build-packages-job >>
+    jobs:
+      - test_packages
+
+  bump-model-version:
+    when: << pipeline.parameters.run-build-bump-model-version-job >>
     jobs:
       - test_app:
           <<: *tags_only
