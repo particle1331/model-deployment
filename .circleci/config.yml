@@ -89,7 +89,10 @@ workflows:
     jobs:
       - train_and_upload_regression_model:
           <<: *tags_only
+      - test_app:
+          <<: *tags_only
       - deploy_app_to_heroku:
           <<: *tags_only
           requires:
+            - test_app
             - train_and_upload_regression_model
