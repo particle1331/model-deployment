@@ -40,6 +40,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - *prepare_heroku
       - run:
           name: Deploy to Heroku
           command: |
