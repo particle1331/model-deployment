@@ -1,4 +1,4 @@
---extra-index-url=${PIP_EXTRA_INDEX_URL} 
+--extra-index-url ${PIP_EXTRA_INDEX_URL} 
 
 uvicorn[standard]
 fastapi>=0.75.1,<1.0.0
