@@ -9,11 +9,15 @@ for p in glob.glob('dist/*.whl'):
         raise Exception("Uploading package failed on file {p}")
 
 # CircleCI API trigger
-request = (
-    f"curl --request POST", 
-    f"--url https://circleci.com/api/v2/project/vcs-slug/org-name/repo-name/pipeline", 
-    f"--header 'Circle-Token: {os.environ['CIRCLE_TOKEN']}",
-    f"--header 'content-type: application/json'",
-    "--data '{\"parameters\":{\"run_regression_model\":false, \"run_deploy_app\":true}}"
-)
-os.system(' '.join(request))
+request = f"""curl --request POST \
+  'https://circleci.com/api/v2/project/github/particle1331/model-deployment/pipeline' \
+  -H f'Circle-Token: {os.environ["CIRCLE_TOKEN"]}' \
+  -H 'Content-Type: application/json' \
+  -d '{{
+    "parameters": {{
+      "run_regression_model": false,
+      "run_deploy_app": true
+    }}
+}}'
+"""
+os.system(request)
