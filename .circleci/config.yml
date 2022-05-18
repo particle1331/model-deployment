@@ -13,6 +13,14 @@ prepare_tox: &prepare_tox
       sudo pip install --upgrade pip
       pip install --user tox
 
+prepare_heroku: &prepare_heroku
+  run:
+    name: Install heroku repo
+    command: |
+      sudo pip install --upgrade pip
+      pip install --user heroku
+      heroku plugins:install https://github.com/heroku/heroku-repo.git
+
 
 jobs:
   test_app:
@@ -35,6 +43,8 @@ jobs:
       - run:
           name: Deploy to Heroku
           command: |
+            heroku repo:purge_cache
+            heroku repo:reset
             git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
   
   train_and_upload_regression_model:
@@ -62,23 +72,45 @@ jobs:
             tox -e publish_model
   
 
+tags_only: &tags_only
+  filters:
+    # Ignore any commit on any branch by default
+    branches:
+      ignore: /.*/
+    # Only act on version tags
+    tags:
+      only: /^.*/
+
+main_only: &main_only
+  filters:
+    branches:
+      only:
+        - main
+
+
 workflows:
   version: 2
-  regression-model:
+
+  bump-model:
     jobs:
-      - test_app
+      - test_app:
+          <<: *tags_only
+
       - train_and_upload_regression_model:
-          filters:
-            # Ignore any commit on any branch by default
-            branches:
-              ignore: /.*/
-            # Only act on version tags
-            tags:
-              only: /^.*/
+          <<: *tags_only
+
       - deploy_app_to_heroku:
+          <<: *tags_only
           requires:
             - test_app
-          filters:
-            branches:
-              only:
-                - main
+            - train_and_upload_regression_model
+
+  bump-app:
+    jobs:
+      - test_app:
+          <<: *main_only
+
+      - deploy_app_to_heroku:
+          <<: *main_only
+          requires:
+            - test_app
