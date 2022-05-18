@@ -8,4 +8,4 @@ typing_extensions>=4.1.1<4.2.0
 loguru>=0.5.3,<0.6.0
 
 # Package published on private index server
-regression-model==0.2.2
+regression-model==0.1.1
