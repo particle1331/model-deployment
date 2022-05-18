@@ -67,9 +67,6 @@ jobs:
           name: Publish model to Gemfury
           command: |
             tox -e publish_model
-  
-
-
 
 
 workflows:
@@ -88,6 +85,8 @@ workflows:
 
   model-version-bump:
     jobs:
+      - train_and_upload_regression_model:
+          <<: *tags_only
       - deploy_app_to_heroku:
           <<: *tags_only
           requires:
