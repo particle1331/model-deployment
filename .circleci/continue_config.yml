@@ -33,6 +33,26 @@ jobs:
           command: |
             tox
 
+  train_regression_model:
+    <<: *defaults
+    working_directory: ~/project/packages/regression_model
+    steps:
+      - checkout:
+          path: ~/project
+      - *prepare_tox
+      - run:
+            name: Fetch the data
+            command: |
+              tox -e fetch_data
+      - run:
+          name: Train the model
+          command: |
+            tox -e train
+      - run:
+          name: Test the model
+          command: |
+            tox
+
   test_regression_model:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
@@ -43,7 +63,6 @@ jobs:
       - run:
           name: Runnning regression model tests
           command: |
-            tox -e train
             tox
   
   deploy_app_to_heroku:
@@ -60,25 +79,13 @@ jobs:
             heroku repo:reset -a $HEROKU_APP_NAME
             git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
   
-  train_and_upload_regression_model:
+  upload_regression_model:
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
       - checkout:
           path: ~/project
       - *prepare_tox
-      - run:
-          name: Fetch the data
-          command: |
-            tox -e fetch_data
-      - run:
-          name: Train the model
-          command: |
-            tox -e train
-      - run:
-          name: Test the model
-          command: |
-            tox
       - run:
           name: Publish model to Gemfury
           command: |
@@ -128,7 +135,10 @@ workflows:
   regression-model:
     when: << pipeline.parameters.run-build-regression-model-job >>
     jobs:
-      - test_regression_model
+      - train_regression_model
+      - test_regression_model:
+        requires:
+          - train_regression_model
 
   bump-model-version:
     when: << pipeline.parameters.run-build-bump-model-version-job >>
@@ -136,11 +146,16 @@ workflows:
       - test_app:
           <<: *tags_only
 
-      - train_and_upload_regression_model:
+      - train_regression_model:
           <<: *tags_only
+
+      - upload_regression_model:
+          <<: *tags_only
+          requires:
+            train_regression_model
 
       - deploy_app_to_heroku:
           <<: *tags_only
           requires:
             - test_app
-            - train_and_upload_regression_model
+            - upload_regression_model
