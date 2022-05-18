@@ -16,4 +16,4 @@ request = (
     f"--header 'content-type: application/json'",
     "--data '{\"parameters\":{\"run_regression_model\":false, \"run_deploy_app\":true}}"
 )
-os.system(request)
+os.system(' '.join(request))
