@@ -33,15 +33,15 @@ jobs:
           command: |
             tox
 
-  test_packages:
+  test_regression_model:
     <<: *defaults
-    working_directory: ~/project/packages
+    working_directory: ~/project/packages/regression_model
     steps:
       - checkout:
           path: ~/project
       - *prepare_tox
       - run:
-          name: Runnning packages tests
+          name: Runnning regression model tests
           command: |
             tox
   
@@ -105,7 +105,7 @@ parameters:
     type: boolean
     default: false
 
-  run-build-packages-job:
+  run-build-regression-model-job:
     type: boolean
     default: false
 
@@ -124,10 +124,10 @@ workflows:
           requires:
             - test_app
 
-  packages:
-    when: << pipeline.parameters.run-build-packages-job >>
+  regression-model:
+    when: << pipeline.parameters.run-build-regression-model-job >>
     jobs:
-      - test_packages
+      - test_regression_model
 
   bump-model-version:
     when: << pipeline.parameters.run-build-bump-model-version-job >>

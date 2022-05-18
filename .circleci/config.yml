@@ -12,7 +12,7 @@ workflows:
           name: check-updated-files
           mapping: |
             api/.* run-build-api-job true
-            packages/.* run-build-packages-job true
+            packages/regression_model/.* run-build-regression-model-job true
           
           base-revision: main
           config-path: .circleci/continue_config.yml
