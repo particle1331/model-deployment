@@ -1,5 +1,6 @@
 import os
 import glob
+import regression_model
 
 
 for p in glob.glob('dist/*.whl'):
