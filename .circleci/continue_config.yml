@@ -148,10 +148,7 @@ workflows:
     when: << pipeline.parameters.run-build-regression-model-job >>
     jobs:
       - train_regression_model
-      - test_regression_model:
-        requires:
-          - train_regression_model
-
+  
   bump-model-version:
     when: << pipeline.parameters.run-build-bump-model-version-job >>
     jobs:
