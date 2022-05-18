@@ -20,7 +20,7 @@ parameters:
     type: boolean
 
   run_deploy_app:
-    default: true
+    default: false
     type: boolean
 
 
