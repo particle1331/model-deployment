@@ -8,9 +8,12 @@ for p in glob.glob('dist/*.whl'):
     except:
         raise Exception("Uploading package failed on file {p}")
 
-os.system(f"""curl --request POST \
-	--url https://circleci.com/api/v2/project/vcs-slug/org-name/repo-name/pipeline \
-	--header 'Circle-Token: {os.environ["CIRCLE_TOKEN"]}' \
-	--header 'content-type: application/json' \
-	--data '{"parameters":{"run_regression_model":false, "run_deploy_app":true}}'
-""")
+# CircleCI API trigger
+request = (
+    f"curl --request POST", 
+    f"--url https://circleci.com/api/v2/project/vcs-slug/org-name/repo-name/pipeline", 
+    f"--header 'Circle-Token: {os.environ['CIRCLE_TOKEN']}",
+    f"--header 'content-type: application/json'",
+    "--data '{\"parameters\":{\"run_regression_model\":false, \"run_deploy_app\":true}}"
+)
+os.system(request)
