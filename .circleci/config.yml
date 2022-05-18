@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 
 
 defaults: &defaults
@@ -13,15 +13,12 @@ prepare_tox: &prepare_tox
       sudo pip install --upgrade pip
       pip install --user tox
 
-
-parameters:
-  run_regression_model:
-    default: true
-    type: boolean
-
-  run_deploy_app:
-    default: false
-    type: boolean
+tags_only: &tags_only
+  filters:
+    # Ignore any commit on any branch by default
+    branches:
+      ignore: /.*/
+    # Only act on version tags
 
 
 jobs:
@@ -72,20 +69,15 @@ jobs:
             tox -e publish_model
   
 
+
+
+
 workflows:
   version: 2
-  regression-model:
-    when: << pipeline.parameters.run_regression_model >>
+
+  app-code-commit:
     jobs:
       - test_app
-      - train_and_upload_regression_model:
-          filters:
-            # Ignore any commit on any branch by default
-            branches:
-              ignore: /.*/
-            # Only act on version tags
-            tags:
-              only: /^.*/
       - deploy_app_to_heroku:
           requires:
             - test_app
@@ -94,14 +86,9 @@ workflows:
               only:
                 - main
 
-  deploy-app:
-    when: << pipeline.parameters.run_deploy_app >>
+  model-version-bump:
     jobs:
-      - test_app
       - deploy_app_to_heroku:
+          <<: *tags_only
           requires:
-            - test_app
-          # filters:
-          #   branches:
-          #     only:
-          #       - main
+            - train_and_upload_regression_model
