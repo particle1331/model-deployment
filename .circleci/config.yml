@@ -19,6 +19,8 @@ tags_only: &tags_only
     branches:
       ignore: /.*/
     # Only act on version tags
+    tags:
+      only: /^.*/
 
 
 jobs:
