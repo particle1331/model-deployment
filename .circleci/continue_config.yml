@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Runnning regression model tests
           command: |
+            tox -e train
             tox
   
   deploy_app_to_heroku:
