@@ -118,12 +118,6 @@ tags_only: &tags_only
     tags:
       only: /^.*/
 
-main_only: &main_only
-  filters:
-    branches:
-      only:
-        - main
-
 
 workflows:
   always-run:
