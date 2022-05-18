@@ -1,115 +1,18 @@
-version: 2
+version: 2.1
 
+setup: true
 
-defaults: &defaults
-  docker:
-    - image: circleci/python:3.9.5
-  working_directory: ~/project
-
-prepare_tox: &prepare_tox
-  run:
-    name: Install tox
-    command: |
-      sudo pip install --upgrade pip
-      pip install --user tox
-
-prepare_heroku: &prepare_heroku
-  run:
-    name: Setup Heroku CLI
-    command: |
-      wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
-
-jobs:
-  test_app:
-    <<: *defaults
-    working_directory: ~/project/api
-    steps:
-      - checkout:
-          path: ~/project
-      - *prepare_tox
-      - run:
-          name: Runnning app tests
-          command: |
-            tox
-  
-  deploy_app_to_heroku:
-    <<: *defaults
-    steps:
-      - checkout:
-          path: ~/project
-      - *prepare_heroku
-      - run:
-          name: Deploy to Heroku
-          command: |
-            heroku plugins:install https://github.com/heroku/heroku-repo.git
-            heroku repo:purge_cache -a $HEROKU_APP_NAME
-            heroku repo:reset -a $HEROKU_APP_NAME
-            git subtree push --prefix api https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
-  
-  train_and_upload_regression_model:
-    <<: *defaults
-    working_directory: ~/project/packages/regression_model
-    steps:
-      - checkout:
-          path: ~/project
-      - *prepare_tox
-      - run:
-          name: Fetch the data
-          command: |
-            tox -e fetch_data
-      - run:
-          name: Train the model
-          command: |
-            tox -e train
-      - run:
-          name: Test the model
-          command: |
-            tox
-      - run:
-          name: Publish model to Gemfury
-          command: |
-            tox -e publish_model
-  
-
-tags_only: &tags_only
-  filters:
-    # Ignore any commit on any branch by default
-    branches:
-      ignore: /.*/
-    # Only act on version tags
-    tags:
-      only: /^.*/
-
-main_only: &main_only
-  filters:
-    branches:
-      only:
-        - main
-
+orbs:
+  path-filtering: circleci/path-filtering@0.1.1
 
 workflows:
-  version: 2
-
-  bump-model:
+  always-run:
     jobs:
-      - test_app:
-          <<: *tags_only
-
-      - train_and_upload_regression_model:
-          <<: *tags_only
-
-      - deploy_app_to_heroku:
-          <<: *tags_only
-          requires:
-            - test_app
-            - train_and_upload_regression_model
-
-  bump-app:
-    jobs:
-      - test_app:
-          <<: *main_only
-
-      - deploy_app_to_heroku:
-          <<: *main_only
-          requires:
-            - test_app
+      - path-filtering/filter:
+          name: check-updated-files
+          mapping: |
+            api/.* run-build-api-job true
+            packages/.* run-build-packages-job true
+          
+          base-revision: main
+          config-path: .circleci/continue_config.yml
