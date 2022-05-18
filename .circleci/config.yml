@@ -18,7 +18,6 @@ prepare_heroku: &prepare_heroku
     name: Install heroku repo
     command: |
       sudo pip install --upgrade pip
-      pip install --user heroku
       heroku plugins:install https://github.com/heroku/heroku-repo.git
 
 
