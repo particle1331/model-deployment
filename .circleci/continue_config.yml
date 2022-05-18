@@ -35,15 +35,15 @@ jobs:
 
   test_packages:
     <<: *defaults
-      working_directory: ~/project/packages
-      steps:
-        - checkout:
-            path: ~/project
-        - *prepare_tox
-        - run:
-            name: Runnning packages tests
-            command: |
-              tox
+    working_directory: ~/project/packages
+    steps:
+      - checkout:
+          path: ~/project
+      - *prepare_tox
+      - run:
+          name: Runnning packages tests
+          command: |
+            tox
   
   deploy_app_to_heroku:
     <<: *defaults
