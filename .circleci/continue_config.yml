@@ -129,10 +129,6 @@ parameters:
     type: boolean
     default: false
 
-  run-build-bump-model-version-job:
-    type: boolean
-    default: true
-
 
 workflows:
   api:
@@ -148,9 +144,8 @@ workflows:
     when: << pipeline.parameters.run-build-regression-model-job >>
     jobs:
       - train_regression_model
-  
+
   bump-model-version:
-    when: << pipeline.parameters.run-build-bump-model-version-job >>
     jobs:
       - test_app:
           <<: *tags_only
