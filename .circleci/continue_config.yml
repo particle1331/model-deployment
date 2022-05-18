@@ -10,6 +10,10 @@ parameters:
     type: boolean
     default: false
 
+  run-build-bump-model-job:
+    type: boolean
+    default: true
+
 
 main_only: &main_only
   filters:
@@ -135,3 +139,19 @@ workflows:
     when: << pipeline.parameters.run-build-regression-model-job >>
     jobs:
       - train_regression_model
+
+  bump-model-version:
+    when: << pipeline.parameters.run-build-bump-model-job >>
+    jobs:
+    # Bump model version. Setup mode allows only one workflow.
+      - test_app:
+          <<: *tags_only
+
+      - train_and_upload_regression_model:
+          <<: *tags_only
+
+      - deploy_app_to_heroku:
+          <<: *tags_only
+          requires:
+            - test_app
+            - train_and_upload_regression_model
