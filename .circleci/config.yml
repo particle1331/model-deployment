@@ -137,8 +137,7 @@ workflows:
           base-revision: main
           config-path: .circleci/continue_config.yml
 
-  bump-model-version:
-    jobs:
+      # Bump model version. Setup mode allows only one workflow.
       - test_app:
           <<: *tags_only
 
