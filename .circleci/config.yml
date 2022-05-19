@@ -99,11 +99,13 @@ workflows:
           config-path: .circleci/continue_config.yml
 
       # Bump model version. Setup mode allows only one workflow.
-      - test_app:
-          <<: *tags_only
-
       - train_and_upload_regression_model:
           <<: *tags_only
+
+      - test_app:
+          <<: *tags_only
+          requires:
+            - train_and_upload_regression_model
 
       - deploy_app_to_heroku:
           <<: *tags_only
