@@ -124,6 +124,21 @@ jobs:
           command: |
             tox -e publish_model
   
+  publish-github-release:
+    docker:
+      - image: circleci/golang:1.8
+    steps:
+      - checkout:
+          path: ~/project
+      - attach_workspace:
+          at: ~/project/packages/regression_model
+      - run:
+          name: "Publish Release on GitHub"
+          command: |
+            go get github.com/tcnksm/ghr
+            VERSION=$(cat regression_model/VERSION)
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./dist/
+
 
 tags_only: &tags_only
   filters:
@@ -157,6 +172,9 @@ workflows:
           <<: *tags_only
 
       - train_and_upload_regression_model:
+          <<: *tags_only
+
+      - publish-github-release:
           <<: *tags_only
 
       - deploy_app_to_heroku:
