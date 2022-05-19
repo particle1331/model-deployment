@@ -27,7 +27,7 @@ prepare_heroku: &prepare_heroku
   run:
     name: Setup Heroku CLI
     command: |
-      wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
+      curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 
 jobs:
