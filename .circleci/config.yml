@@ -111,4 +111,3 @@ workflows:
           <<: *tags_only
           requires:
             - test_app
-            - train_and_upload_regression_model
