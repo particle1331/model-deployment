@@ -8,8 +8,6 @@ on:
       - main
     paths:
       - 'packages/regression_model/regression_model/VERSION'
-    tags:
-      - "*"
 
 # Automatically create a GitHub Release, with release details specified (the relevant commits)
 jobs:
