@@ -138,7 +138,3 @@ workflows:
           <<: *main_only
           requires:
             - test_app
-
-  test:
-    jobs:
-      - test_app
