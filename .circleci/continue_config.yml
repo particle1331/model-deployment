@@ -10,6 +10,10 @@ parameters:
     type: boolean
     default: false
 
+  regression-model-version-bump:
+    type: boolean
+    default: false
+
 
 defaults: &defaults
   docker:
@@ -43,7 +47,7 @@ jobs:
           command: |
             tox
 
-  test_regression_model:
+  test_regression_model: &test_regression_model
     <<: *defaults
     working_directory: ~/project/packages/regression_model
     steps:
@@ -62,6 +66,30 @@ jobs:
           name: Test the model
           command: |
             tox
+  
+  train_and_upload_regression_model:
+    <<: *defaults
+    working_directory: ~/project/packages/regression_model
+    steps:
+      - checkout:
+          path: ~/project
+      - *prepare_tox
+      - run:
+            name: Fetch the data
+            command: |
+              tox -e fetch_data
+      - run:
+          name: Train the model
+          command: |
+            tox -e train
+      - run:
+          name: Test the model
+          command: |
+            tox
+      - run:
+          name: Publish model
+          command: |
+            tox -e publish_model
   
   deploy_app_to_heroku:
     <<: *defaults
@@ -84,15 +112,6 @@ main_only: &main_only
       only:
         - main  
 
-tags_only: &tags_only
-  filters:
-    # Ignore any commit on any branch by default
-    branches:
-      ignore: /.*/
-    # Only act on version tags
-    tags:
-      only: /^.*/
-
 
 workflows:
   api-update:
@@ -108,3 +127,17 @@ workflows:
     when: << pipeline.parameters.regression-model-updated >>
     jobs:
       - test_regression_model
+
+  regression-model-upload:
+    when: << pipeline.parameters.regression-model-version-bump >>
+    jobs:
+      - train_and_upload_regression_model:
+          <<: *main_only
+      - test_app:
+          <<: *main_only
+          requires:
+            - train_and_upload_regression_model
+      - deploy_app_to_heroku:
+          <<: *main_only
+          requires:
+            - test_app
