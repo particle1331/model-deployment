@@ -4,6 +4,8 @@ name: Model update
 # Run on every version update
 on:
   push:
+    branches:
+      - main
     paths:
       - 'packages/regression_model/regression_model/VERSION'
 
