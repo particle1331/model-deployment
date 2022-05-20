@@ -15,8 +15,10 @@ jobs:
     name: "model-update"
     runs-on: "ubuntu-latest"
     steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v2.x
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: "${GITHUB_REF_SLUG}"
           prerelease: false
