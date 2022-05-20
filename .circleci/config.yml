@@ -2,6 +2,15 @@ version: 2.1
 
 setup: true
 
+parameters:
+  api-updated:
+    type: boolean
+    default: false
+
+  regression-model-updated:
+    type: boolean
+    default: false
+
 defaults: &defaults
   docker:
     - image: circleci/python:3.9.5
@@ -94,10 +103,13 @@ workflows:
           mapping: |
             api/.* api-updated true
             packages/regression_model/.* regression-model-updated true
-          
+
           base-revision: main
           config-path: .circleci/continue_config.yml
 
+  
+  model-update:
+    jobs:
       # Bump model version. Setup mode allows only one workflow.
       - train_and_upload_regression_model:
           <<: *tags_only
