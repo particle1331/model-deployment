@@ -129,7 +129,7 @@ workflows:
       - test_regression_model
 
   regression-model-upload:
-    when: << regression-model-version-bump >>
+    when: << pipeline.parameters.regression-model-version-bump >>
     jobs:
       - train_and_upload_regression_model:
           <<: *main_only
