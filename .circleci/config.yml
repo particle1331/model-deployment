@@ -77,10 +77,12 @@ tags_only: &tags_only
   filters:
     # Ignore any commit on any branch by default
     branches:
-      ignore: /.*/
+      ignore: 
+        /.*/
     # Only act on version tags
     tags:
-      only: /^.*/
+      only: 
+        /^.*/
 
 orbs:
   # https://circleci.com/developer/orbs/orb/circleci/path-filtering
